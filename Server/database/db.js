@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const connectDB = async() => {
     try{
-    const con = await mongoose.connect("mongodb://localhost:27017/booking01DB", {
+    const con = await mongoose.connect("mongodb+srv://admin:PhpDhWKIHcsoAVuX@nurizki.mnwy73b.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp", {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
