@@ -5,7 +5,7 @@ const checkRole = require('../middleware/checkRole');
 
 const router = express.Router();
 
-router.post('/create', auth, checkRole("admin"), userController.addUser);
+router.post('/create', userController.addUser);
 router.patch('/update/:id', auth, checkRole("admin"), userController.updateUser);
 router.get('/read', auth, userController.viewUser);
 router.delete('/delete/:id', auth, checkRole("admin"), userController.deleteUser);

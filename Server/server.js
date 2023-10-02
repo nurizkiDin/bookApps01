@@ -5,7 +5,7 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 // connection mongoDB
 const connectDB = require('./database/db');
@@ -61,9 +61,9 @@ app.use('/api/dashboard', dashboardRouter);
 //client
 app.use('/api/client', homeRouter);
 
-app.get('/', (req, res) => {
-    res.send('hlo');
-});
+// app.get('/', (req, res) => {
+//     res.send('hlo');
+// });
 
 app.listen(port, () => {
     console.log(`app listening to http://localhost:${port}`);
