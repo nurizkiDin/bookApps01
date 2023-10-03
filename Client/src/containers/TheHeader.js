@@ -10,9 +10,7 @@ import {
   // CLink
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-
-// routes config
-// import routes from '../routes'
+import { ToastContainer } from "react-toastify";
 
 import { 
   TheHeaderDropdown
@@ -63,6 +61,7 @@ const TheHeader = () => {
       <CHeaderNav className="px-3">
         <TheHeaderDropdown/>
       </CHeaderNav>
+      <ToastContainer/>
     </CHeader>
   )
 }

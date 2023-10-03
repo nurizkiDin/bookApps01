@@ -65,7 +65,7 @@ const Login = () => {
               }
             })
             localStorage.setItem("user_info", JSON.stringify(user_info.data))
-            localStorage.setItem("token", JSON.stringify(user_info.token))
+            localStorage.setItem("token", JSON.stringify(response.data.token))
             history.push("/admin/dashboard")
           }
           catch(err) {
