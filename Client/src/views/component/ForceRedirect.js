@@ -1,8 +1,8 @@
-const { useHistory } = require("react-router-dom/cjs/react-router-dom")
+// const { useHistory } = require("react-router-dom/cjs/react-router-dom")
 
-const ForceRedirect = () => {
-    const history = useHistory()
-    history.push("/admin/dashboard")
-}
+// const ForceRedirect = () => {
+//     const history = useHistory()
+//     history.push("/admin/dashboard")
+// }
 
-export default ForceRedirect
+// export default ForceRedirect

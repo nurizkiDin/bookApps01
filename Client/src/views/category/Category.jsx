@@ -10,8 +10,9 @@ import {
 } from "@coreui/react";
 import axios from "../../services/api"
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
-import ForceRedirect from "../component/ForceRedirect";
+// import ForceRedirect from "../component/ForceRedirect";
 import CIcon from "@coreui/icons-react";
+import swal from "sweetalert";
 // import '../../scss/style.scss'
 
 const Category = () => {
@@ -19,10 +20,37 @@ const Category = () => {
     const history = useHistory()
     const [categoryData, setCategoryData] = useState([])
     const [status, setStatus] = useState(0)
+    // const [rowID, setRowID] = useState([])
+    // const [rowData, setRowData] = useState([])
 
     const fields = [
         { key : "categoryName", _style: { width: "80%" } }, "Actions"
     ]
+    const ForceRedirect = () => {
+        localStorage.clear()
+        history.push("/admin/login")
+    }
+    function handleRefresh() {
+        setStatus(status + 1)
+    }
+    // function handleAction(id, item) {
+    //     setRowID(id)
+    //     setRowData(item)
+    // }
+
+    const deleteRow = (rowID) => {
+        axios.delete("/category/delete/" + rowID, {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        }).then((res) => {
+            handleRefresh()
+            swal("Success", res.data.message, "success")
+        }).catch((err) => {
+            // console.log(err.response.data)
+            swal("Failed to delete!", err.response.data)
+        })
+    }
 
     useEffect(() => {
         async function getData() {
@@ -69,14 +97,18 @@ const Category = () => {
                                         <td className="py-2">
                                             <CButton
                                                 size="sm"
-                                                // onClick={{}}
+                                                // onClick={(e) => {
+                                                //     handleAction(item._id, item)
+                                                // }}
                                             >
                                                 <CIcon className="action_edit" name={"cilPencil"} />
                                             </CButton>
                                             <CButton
                                                 size="sm"
-                                                onClick={(e) => {
-                                                    if(window.confirm("Are you sure delete this data ?")) {}
+                                                onClick={() => {
+                                                    if(window.confirm("Are you sure delete this data ?")) {
+                                                        deleteRow(item._id)
+                                                    }
                                                 }}
                                             >
                                                 <CIcon className="action_delete" name={"cilTrash"} />
