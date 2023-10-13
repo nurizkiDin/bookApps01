@@ -9,7 +9,7 @@ module.exports = {
             // ambil data item paling laris berdasarkan sumBooked
             const hotItem = await Item.find()
                 .select("_id itemName location itemPrice unit imageId sumBooked isPopular")
-                .limit(5)
+                .limit(4)
                 .populate({
                     path: "image",
                     select: "_id imageUrl",
@@ -28,8 +28,24 @@ module.exports = {
                     select: "_id itemName location"
                 });
 
-            const categoryList = await Category.find({ $where: "this.item.length > 0" })
-            // .select("_id infoName type imageUrl description item")
+            // ---Atlas mongoDB Tier problem : free cloud issue with $where statement---
+            // const categoryList = await Category.find({ $where: "this.item.length > 0" })
+            // .limit(3)
+            // .populate({
+            //     path: "item",
+            //     select: "_id itemName location itemPrice unit imageId isPopular",
+            //     perDocumentLimit: 4,
+            //     option: {
+            //         sort: {
+            //             sumBooked: -1
+            //         }
+            //     },
+            //     populate: {
+            //         path: "image",
+            //         perDocumentLimit: 1
+            //     }
+            // });
+            const categoryList = await Category.find()
             .limit(3)
             .populate({
                 path: "item",

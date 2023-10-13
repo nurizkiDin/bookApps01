@@ -13,6 +13,11 @@ const TheLayout = React.lazy(() => import('./containers/TheLayout'));
 
 // Pages
 const Login = React.lazy(() => import('./views/login/Login'));
+const LandingPage = React.lazy(() => import('./views/landingPage/index'));
+const ItemDetail = React.lazy(() => import('./views/itemDetail/index'));
+const CheckOut = React.lazy(() => import('./views/checkOut/index'));
+const ListItem = React.lazy(() => import('./views/listItem/index'));
+const Testimony = React.lazy(() => import('./views/testimony/index'));
 
 class App extends Component {
 
@@ -22,7 +27,12 @@ class App extends Component {
           <React.Suspense fallback={loading}>
             <Switch>
               <Route exact path="/admin/login" name="Login" render={props => <Login {...props}/>} />
-              <Route path="/" name="Home" render={props => <TheLayout {...props}/>} />
+              <Route path="/admin" name="Home" render={props => <TheLayout {...props}/>} />
+              <Route exact path="/" name="Landing Page" render={props => <LandingPage {...props}/>} />
+              <Route exact path="/item/:id" name="Item Page" render={props => <ItemDetail {...props}/>} />
+              <Route exact path="/booking" name="Check Out" render={props => <CheckOut {...props}/>} />
+              <Route exact path="/list" name="Check Out" render={props => <ListItem {...props}/>} />
+              <Route exact path="/testimony" name="Check Out" render={props => <Testimony {...props}/>} />
             </Switch>
           </React.Suspense>
       </BrowserRouter>

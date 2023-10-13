@@ -50,7 +50,7 @@ function checkFileType(file, cb) {
     if (mimeType && extName) {
         return cb(null, true);
     } else {
-        cb("Error: Images Only !!!");
+        cb(new Error("Images Only !!!"));
     }
 }
 

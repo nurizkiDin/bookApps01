@@ -9,8 +9,8 @@ import {
   CHeaderNavLink,
   // CLink
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 import { ToastContainer } from "react-toastify";
+// import Logo from "../../src/assets/images/logo.png"
 
 import { 
   TheHeaderDropdown
@@ -43,7 +43,8 @@ const TheHeader = () => {
         onClick={toggleSidebar}
       />
       <CHeaderBrand className="mx-auto d-lg-none" to="/">
-        <CIcon name="logo" height="48" alt="Logo"/>
+        {/* <CIcon name="logo" height="48" alt="Logo"/> */}
+        <h1>Let`s Book</h1>
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">

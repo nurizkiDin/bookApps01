@@ -1,10 +1,9 @@
 import { sygnet } from './sygnet'
-import { logo } from './logo'
-import { logoNegative } from './logo-negative'
 
 import {
   cibSkype,
   cibFacebook,
+  cilImage,
   cibTwitter,
   cibLinkedin,
   cibFlickr,
@@ -127,14 +126,14 @@ import {
   cilUserUnfollow,
   cilX,
   cilXCircle,
-  cilWarning
+  cilWarning,
+  cilCart
 } from '@coreui/icons'
 
 export const icons = Object.assign({}, {
-  sygnet,
-  logo,
-  logoNegative
+  sygnet
 }, {
+  cilCart,
   cilAlignCenter,
   cilAlignLeft,
   cilAlignRight,
@@ -236,6 +235,7 @@ export const icons = Object.assign({}, {
 }, {
   cibSkype,
   cibFacebook,
+  cilImage,
   cibTwitter,
   cibLinkedin,
   cibFlickr,

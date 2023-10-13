@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import Logo from "../../src/assets/images/logo.png"
 import {
   CCreateElement,
   CSidebar,
@@ -10,6 +11,7 @@ import {
   CSidebarMinimizer,
   CSidebarNavDropdown,
   CSidebarNavItem,
+  CImg,
 } from '@coreui/react'
 
 import CIcon from '@coreui/icons-react'
@@ -27,10 +29,10 @@ const TheSidebar = () => {
       onShowChange={(val) => dispatch({type: 'set', sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
-        <CIcon
+        <CImg
           className="c-sidebar-brand-full"
-          name="logo-negative"
-          height={35}
+          src={Logo}
+          height={70}
         />
         <CIcon
           className="c-sidebar-brand-minimized"

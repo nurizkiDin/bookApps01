@@ -18,6 +18,7 @@ import CIcon from '@coreui/icons-react'
 import swal from 'sweetalert'
 import { useFormik } from 'formik'
 import axios from '../../services/api'
+import { ToastContainer } from "react-toastify";
 
 const Login = () => {
     const [message, setMessage] = useState("");
@@ -76,7 +77,6 @@ const Login = () => {
         }
       }
       catch(err) {
-        console.log(err.response.data)
         if(err.response.status === 400) {
           setMessage(err.response.data.message)
         } else {
@@ -92,6 +92,7 @@ const Login = () => {
     })
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
+      <ToastContainer/>
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md="8">

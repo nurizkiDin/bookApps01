@@ -13,15 +13,16 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 // import ForceRedirect from "../component/ForceRedirect";
 import CIcon from "@coreui/icons-react";
 import swal from "sweetalert";
-// import '../../scss/style.scss'
+import CategoryModal from "./CategoryModal";
 
 const Category = () => {
     const token = JSON.parse(localStorage.getItem("token"))
+    const [showModal, setShowModal] = useState(false)
     const history = useHistory()
     const [categoryData, setCategoryData] = useState([])
     const [status, setStatus] = useState(0)
-    // const [rowID, setRowID] = useState([])
-    // const [rowData, setRowData] = useState([])
+    const [rowID, setRowID] = useState([])
+    const [rowData, setRowData] = useState([])
 
     const fields = [
         { key : "categoryName", _style: { width: "80%" } }, "Actions"
@@ -33,10 +34,14 @@ const Category = () => {
     function handleRefresh() {
         setStatus(status + 1)
     }
-    // function handleAction(id, item) {
-    //     setRowID(id)
-    //     setRowData(item)
-    // }
+    function handleAction(id, item) {
+        setRowID(id)
+        setRowData(item)
+        handleShowModal()
+    }
+    function handleShowModal() {
+        setShowModal(!showModal)
+    }
 
     const deleteRow = (rowID) => {
         axios.delete("/category/delete/" + rowID, {
@@ -48,7 +53,7 @@ const Category = () => {
             swal("Success", res.data.message, "success")
         }).catch((err) => {
             // console.log(err.response.data)
-            swal("Failed to delete!", err.response.data)
+            swal("Failed to delete!", err.response.data.message)
         })
     }
 
@@ -63,12 +68,11 @@ const Category = () => {
                 setCategoryData(data)
             }
             catch(err) {
-                if(err.response.status === 403) {
-                    ForceRedirect()
-                }
+                ForceRedirect()
             }
         }
         getData()
+        // eslint-disable-next-line
     }, [status])
 
     return (
@@ -76,9 +80,17 @@ const Category = () => {
             <CCol sm="12">
                 <CCard>
                     <CCardHeader>
-                        <CButton color="primary" size="sm" className="m-2">
+                        <CButton onClick={() => handleAction(0, [])} color="primary" size="sm" className="m-2">
                             Add New Category
                         </CButton>
+                        <CategoryModal
+                            display={showModal}
+                            handleShowModal={handleShowModal}
+                            handleRefresh={handleRefresh}
+                            token={token}
+                            rowData={rowData}
+                            rowID={rowID}
+                        />
                     </CCardHeader>
                     <CCardBody>
                         <CDataTable
@@ -97,9 +109,9 @@ const Category = () => {
                                         <td className="py-2">
                                             <CButton
                                                 size="sm"
-                                                // onClick={(e) => {
-                                                //     handleAction(item._id, item)
-                                                // }}
+                                                onClick={() => {
+                                                    handleAction(item._id, item)
+                                                }}
                                             >
                                                 <CIcon className="action_edit" name={"cilPencil"} />
                                             </CButton>

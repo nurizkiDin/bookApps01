@@ -13,22 +13,22 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 // import ForceRedirect from "../component/ForceRedirect";
 import CIcon from "@coreui/icons-react";
 import swal from "sweetalert";
-import BankModal from "./BankModal";
+import InfoModal from "./InfoModal";
 
-const Bank = () => {
+const InfoTable = () => {
     const token = JSON.parse(localStorage.getItem("token"))
     const [showModal, setShowModal] = useState(false)
     const history = useHistory()
-    const [bankData, setBankData] = useState([])
+    const [infoData, setInfoData] = useState([])
     const [status, setStatus] = useState(0)
     const [rowID, setRowID] = useState([])
     const [rowData, setRowData] = useState([])
 
     const fields = [
-        "bankName",
-        "accountHolder",
-        "accountNumber",
-        "Logo",
+        "Item",
+        "infoName",
+        "type",
+        "infoImage",
         "Actions"
     ]
     const ForceRedirect = () => {
@@ -38,17 +38,20 @@ const Bank = () => {
     function handleRefresh() {
         setStatus(status + 1)
     }
-    function handleAction(id, item) {
+    function handleAction(id, info) {
         setRowID(id)
-        setRowData(item)
+        setRowData(info)
         handleShowModal()
     }
     function handleShowModal() {
         setShowModal(!showModal)
+        if(document.getElementById("image")) {
+            document.getElementById("image").value = ""
+        }
     }
 
     const deleteRow = (rowID) => {
-        axios.delete("/bank/delete/" + rowID, {
+        axios.delete("/item/info/delete/" + rowID, {
             headers: {
                 Authorization: "Bearer " + token
             }
@@ -56,6 +59,7 @@ const Bank = () => {
             handleRefresh()
             swal("Success", res.data.message, "success")
         }).catch((err) => {
+            // console.log(err.response.data)
             swal("Failed to delete!", err.response.data)
         })
     }
@@ -63,12 +67,12 @@ const Bank = () => {
     useEffect(() => {
         async function getData() {
             try {
-                let { data } = await axios.get("/bank/read", {
+                let { data } = await axios.get("/item/info/read", {
                     headers: {
                         Authorization : "Bearer " + token
                     }
                 })
-                setBankData(data)
+                setInfoData(data)
             }
             catch(err) {
                 ForceRedirect()
@@ -84,9 +88,9 @@ const Bank = () => {
                 <CCard>
                     <CCardHeader>
                         <CButton onClick={() => handleAction(0, [])} color="primary" size="sm" className="m-2">
-                            Add New Bank
+                            Add New Info
                         </CButton>
-                        <BankModal
+                        <InfoModal
                             display={showModal}
                             handleShowModal={handleShowModal}
                             handleRefresh={handleRefresh}
@@ -97,7 +101,7 @@ const Bank = () => {
                     </CCardHeader>
                     <CCardBody>
                         <CDataTable
-                            items={bankData}
+                            items={infoData}
                             fields={fields}
                             tableFilter
                             footer
@@ -107,7 +111,14 @@ const Bank = () => {
                             sorter
                             pagination
                             scopedSlots={{
-                                'Logo' : (item) => {
+                                'Item' : (item) => {
+                                    return (
+                                        <td className="py-2">
+                                            {item.item[0] ? item.item[0].itemName : "No Item Related"}
+                                        </td>
+                                    )
+                                },
+                                'infoImage' : (item) => {
                                     return (
                                         <td className="py-2">
                                             <div>
@@ -153,4 +164,4 @@ const Bank = () => {
     );
 }
 
-export default Bank;
+export default InfoTable;

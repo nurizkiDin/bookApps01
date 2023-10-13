@@ -17,13 +17,14 @@ const loading = (
 
 const TheContent = () => {
   const user_info = localStorage.getItem('user_info')
+  const token = localStorage.getItem('token')
   return (
     <main className="c-main">
       <CContainer fluid>
         <Suspense fallback={loading}>
           <Switch>
             {routes.map((route, idx) => {
-              return route.component && user_info && (
+              return route.component && user_info && token && (
                 <Route
                   key={idx}
                   path={route.path}

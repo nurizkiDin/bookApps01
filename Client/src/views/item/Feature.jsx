@@ -13,21 +13,21 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 // import ForceRedirect from "../component/ForceRedirect";
 import CIcon from "@coreui/icons-react";
 import swal from "sweetalert";
-import BankModal from "./BankModal";
+import FeatureModal from "./FeatureModal";
 
-const Bank = () => {
+const Feature = () => {
     const token = JSON.parse(localStorage.getItem("token"))
     const [showModal, setShowModal] = useState(false)
     const history = useHistory()
-    const [bankData, setBankData] = useState([])
+    const [featureData, setFeatureData] = useState([])
     const [status, setStatus] = useState(0)
     const [rowID, setRowID] = useState([])
     const [rowData, setRowData] = useState([])
 
     const fields = [
-        "bankName",
-        "accountHolder",
-        "accountNumber",
+        "Item",
+        "featureName",
+        "qty",
         "Logo",
         "Actions"
     ]
@@ -38,17 +38,20 @@ const Bank = () => {
     function handleRefresh() {
         setStatus(status + 1)
     }
-    function handleAction(id, item) {
+    function handleAction(id, feature) {
         setRowID(id)
-        setRowData(item)
+        setRowData(feature)
         handleShowModal()
     }
     function handleShowModal() {
         setShowModal(!showModal)
+        if(document.getElementById("image")) {
+            document.getElementById("image").value = ""
+        }
     }
 
     const deleteRow = (rowID) => {
-        axios.delete("/bank/delete/" + rowID, {
+        axios.delete("/item/feature/delete/" + rowID, {
             headers: {
                 Authorization: "Bearer " + token
             }
@@ -56,6 +59,7 @@ const Bank = () => {
             handleRefresh()
             swal("Success", res.data.message, "success")
         }).catch((err) => {
+            // console.log(err.response.data)
             swal("Failed to delete!", err.response.data)
         })
     }
@@ -63,12 +67,12 @@ const Bank = () => {
     useEffect(() => {
         async function getData() {
             try {
-                let { data } = await axios.get("/bank/read", {
+                let { data } = await axios.get("/item/feature/read", {
                     headers: {
                         Authorization : "Bearer " + token
                     }
                 })
-                setBankData(data)
+                setFeatureData(data)
             }
             catch(err) {
                 ForceRedirect()
@@ -84,9 +88,9 @@ const Bank = () => {
                 <CCard>
                     <CCardHeader>
                         <CButton onClick={() => handleAction(0, [])} color="primary" size="sm" className="m-2">
-                            Add New Bank
+                            Add New Feature
                         </CButton>
-                        <BankModal
+                        <FeatureModal
                             display={showModal}
                             handleShowModal={handleShowModal}
                             handleRefresh={handleRefresh}
@@ -97,7 +101,7 @@ const Bank = () => {
                     </CCardHeader>
                     <CCardBody>
                         <CDataTable
-                            items={bankData}
+                            items={featureData}
                             fields={fields}
                             tableFilter
                             footer
@@ -107,6 +111,13 @@ const Bank = () => {
                             sorter
                             pagination
                             scopedSlots={{
+                                'Item' : (item) => {
+                                    return (
+                                        <td className="py-2">
+                                            {item.item[0] ? item.item[0].itemName : "No Item Related"}
+                                        </td>
+                                    )
+                                },
                                 'Logo' : (item) => {
                                     return (
                                         <td className="py-2">
@@ -153,4 +164,4 @@ const Bank = () => {
     );
 }
 
-export default Bank;
+export default Feature;

@@ -6,6 +6,7 @@ import {
     CCardHeader, 
     CCol, 
     CDataTable, 
+    CLink, 
     CRow 
 } from "@coreui/react";
 import axios from "../../services/api"
@@ -13,22 +14,24 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 // import ForceRedirect from "../component/ForceRedirect";
 import CIcon from "@coreui/icons-react";
 import swal from "sweetalert";
-import BankModal from "./BankModal";
+import ItemModal from "./ItemModal";
 
-const Bank = () => {
+const ItemTable = () => {
     const token = JSON.parse(localStorage.getItem("token"))
     const [showModal, setShowModal] = useState(false)
     const history = useHistory()
-    const [bankData, setBankData] = useState([])
+    const [itemData, setItemData] = useState([])
     const [status, setStatus] = useState(0)
     const [rowID, setRowID] = useState([])
     const [rowData, setRowData] = useState([])
 
     const fields = [
-        "bankName",
-        "accountHolder",
-        "accountNumber",
-        "Logo",
+        "category",
+        "itemName",
+        "unit",
+        "location",
+        "itemPrice",
+        "isPopular",
         "Actions"
     ]
     const ForceRedirect = () => {
@@ -48,7 +51,7 @@ const Bank = () => {
     }
 
     const deleteRow = (rowID) => {
-        axios.delete("/bank/delete/" + rowID, {
+        axios.delete("/item/delete/" + rowID, {
             headers: {
                 Authorization: "Bearer " + token
             }
@@ -63,12 +66,12 @@ const Bank = () => {
     useEffect(() => {
         async function getData() {
             try {
-                let { data } = await axios.get("/bank/read", {
+                let { data } = await axios.get("/item/read", {
                     headers: {
                         Authorization : "Bearer " + token
                     }
                 })
-                setBankData(data)
+                setItemData(data)
             }
             catch(err) {
                 ForceRedirect()
@@ -84,9 +87,9 @@ const Bank = () => {
                 <CCard>
                     <CCardHeader>
                         <CButton onClick={() => handleAction(0, [])} color="primary" size="sm" className="m-2">
-                            Add New Bank
+                            Add New Item
                         </CButton>
-                        <BankModal
+                        <ItemModal
                             display={showModal}
                             handleShowModal={handleShowModal}
                             handleRefresh={handleRefresh}
@@ -97,7 +100,7 @@ const Bank = () => {
                     </CCardHeader>
                     <CCardBody>
                         <CDataTable
-                            items={bankData}
+                            items={itemData}
                             fields={fields}
                             tableFilter
                             footer
@@ -107,22 +110,19 @@ const Bank = () => {
                             sorter
                             pagination
                             scopedSlots={{
-                                'Logo' : (item) => {
+                                'category' : (item) => {
                                     return (
                                         <td className="py-2">
-                                            <div>
-                                                <img
-                                                    className="size_image_table"
-                                                    src={"http://localhost:3001/" + item.imageUrl}
-                                                    alt={item.imageUrl}
-                                                />
-                                            </div>
+                                            {item.category.categoryName}
                                         </td>
                                     )
                                 },
                                 'Actions' : (item) => {
                                     return (
                                         <td className="py-2">
+                                            <CLink to={`/admin/image/${item._id}`}>
+                                                <CIcon className="action_view" name="cilImage" />
+                                            </CLink>
                                             <CButton
                                                 size="sm"
                                                 onClick={() => {
@@ -153,4 +153,4 @@ const Bank = () => {
     );
 }
 
-export default Bank;
+export default ItemTable;
