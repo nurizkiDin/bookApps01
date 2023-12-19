@@ -14,7 +14,7 @@ module.exports = {
                     imageUrl: `images/${req.file.filename}`
                 })
 
-                item.Image.push({
+                item.image.push({
                     _id: imageSave._id
                 })
                 await item.save();

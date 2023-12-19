@@ -18,6 +18,7 @@ const ItemDetail = React.lazy(() => import('./views/itemDetail/index'));
 const CheckOut = React.lazy(() => import('./views/checkOut/index'));
 const ListItem = React.lazy(() => import('./views/listItem/index'));
 const Testimony = React.lazy(() => import('./views/testimony/index'));
+const Page404 = React.lazy(() => import('./views/Page404'));
 
 class App extends Component {
 
@@ -33,6 +34,7 @@ class App extends Component {
               <Route exact path="/booking" name="Check Out" render={props => <CheckOut {...props}/>} />
               <Route exact path="/list" name="Check Out" render={props => <ListItem {...props}/>} />
               <Route exact path="/testimony" name="Check Out" render={props => <Testimony {...props}/>} />
+              <Route component={Page404} />
             </Switch>
           </React.Suspense>
       </BrowserRouter>
